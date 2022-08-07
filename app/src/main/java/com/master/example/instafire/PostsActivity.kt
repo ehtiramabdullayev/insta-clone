@@ -76,8 +76,12 @@ open class PostsActivity : AppCompatActivity() {
 
             for (post in postList) {
                 Log.i(TAG, "Post ${post}")
-
             }
+        }
+
+        fabCreate.setOnClickListener{
+            val intent = Intent(this,CreateActivity::class.java)
+            startActivity(intent)
         }
 
     }

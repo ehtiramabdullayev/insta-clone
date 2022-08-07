@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">InstaFire</string>
+    <string name="button">Button</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="login">Login</string>
 </resources>

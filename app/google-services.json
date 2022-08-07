@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "870570545031",
+    "firebase_url": "https://my-not-awesome-project-b8183.firebaseio.com",
+    "project_id": "my-not-awesome-project-b8183",
+    "storage_bucket": "my-not-awesome-project-b8183.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870570545031:android:d5d0b74d1d79e12854cd22",
+        "android_client_info": {
+          "package_name": "com.master.example.instafire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870570545031-6ut09m6jtn3781d53otca0tvisvmvlo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9-2TB6k24TSNGLlhMB5-cmvmvMCnSVV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870570545031-6ut09m6jtn3781d53otca0tvisvmvlo9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

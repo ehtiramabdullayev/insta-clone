@@ -8,15 +8,18 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.master.example.instafire.models.Post
+import com.master.example.instafire.models.User
 import kotlinx.android.synthetic.main.activity_posts.*
 
 private const val TAG = "PostsActivity"
+private const val EXTRA_USERNAME = "EXTRA_USERNAME"
 
-class PostsActivity : AppCompatActivity() {
-
+open class PostsActivity : AppCompatActivity() {
+    private var signedInUser: User? = null
     private lateinit var firestore: FirebaseFirestore
     private lateinit var posts: MutableList<Post>
     private lateinit var adapter: PostsAdapter
@@ -26,7 +29,7 @@ class PostsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
 
-        // create the layout file which represent one post - done
+        // create the layout file which represent one post
         // create data source
         posts = mutableListOf()
         // create adapter
@@ -36,10 +39,29 @@ class PostsActivity : AppCompatActivity() {
         rvPosts.layoutManager = LinearLayoutManager(this)
 
         firestore = FirebaseFirestore.getInstance()
-        val postsReference = firestore
+        firestore.collection("users")
+            .document(FirebaseAuth.getInstance().currentUser?.uid as String)
+            .get()
+            .addOnSuccessListener { userSnapshot ->
+                signedInUser = userSnapshot.toObject(User::class.java)
+                Log.i(TAG, "Signed-in user: $signedInUser")
+
+            }
+            .addOnFailureListener { exception ->
+                Log.i(TAG, "Failure fetching signed-in user", exception)
+            }
+
+        var postsReference = firestore
             .collection("posts")
             .limit(20)
             .orderBy("creation_time_ms", Query.Direction.DESCENDING)
+
+        val username = intent.getStringExtra(EXTRA_USERNAME)
+
+        if (username != null) {
+            supportActionBar?.title = username
+            postsReference = postsReference.whereEqualTo("user.username", username)
+        }
 
         postsReference.addSnapshotListener { snapshot, exception ->
             if (exception != null || snapshot == null) {
@@ -68,6 +90,7 @@ class PostsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_profile) {
             val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra(EXTRA_USERNAME, signedInUser?.username)
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
